@@ -17,9 +17,15 @@ public record PersonDTO(
         List<CarDTO> cars) {
 
     public PersonDTO(PersonEntity p) {
-        this(p.getId() == null ? new ObjectId().toHexString() : p.getId().toHexString(), p.getFirstName(),
-             p.getLastName(), p.getAge(), new AddressDTO(p.getAddress()), p.getCreatedAt(), p.getInsurance(),
-             p.getCars().stream().map(CarDTO::new).toList());
+        this(
+            p.getId() == null ? new ObjectId().toHexString() : p.getId().toHexString(),
+            p.getFirstName(),
+            p.getLastName(),
+            p.getAge(),
+            new AddressDTO(p.getAddress()),
+            p.getCreatedAt(),
+            p.getInsurance(),
+            p.getCars().stream().map(CarDTO::new).toList());
     }
 
     public PersonEntity toPersonEntity() {

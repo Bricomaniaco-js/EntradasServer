@@ -1,0 +1,11 @@
+@RestController
+    marca la clase como restful
+    que es restful? que se muestra en el servidor web.
+@getmapping
+    pone en el servidor web lo que devuelve el metodo en json
+    como metodo get
+
+
+
+TODO: COMPARTIR POR RSA UNA CLAVE SIMETRICA
+
