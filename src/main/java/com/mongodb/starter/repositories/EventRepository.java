@@ -1,5 +1,7 @@
 package com.mongodb.starter.repositories;
 
+import com.mongodb.starter.model.Event;
+import com.mongodb.starter.model.Ticket;
 import com.mongodb.starter.models.PersonEntity;
 import org.springframework.stereotype.Repository;
 
@@ -8,28 +10,18 @@ import java.util.List;
 @Repository
 public interface EventRepository {
 
-    PersonEntity save(PersonEntity personEntity);
+     boolean eventExists(Event event);
 
-    List<PersonEntity> saveAll(List<PersonEntity> personEntities);
+    Event update(Event eventEntity);
 
-    List<PersonEntity> findAll();
+    List<Event> findAll(List<String> ids);
 
-    List<PersonEntity> findAll(List<String> ids);
+    List<Event> findAll();
 
-    PersonEntity findOne(String id);
+    List<Event> UserFindAll();
 
-    long count();
 
-    long delete(String id);
+    boolean addTicket(Event event, Ticket t);
 
-    long delete(List<String> ids);
-
-    long deleteAll();
-
-    PersonEntity update(PersonEntity personEntity);
-
-    long update(List<PersonEntity> personEntities);
-
-    double getAverageAge();
-
+    boolean eventHasAvailableTickets(Event event);
 }

@@ -1,35 +1,48 @@
 package com.mongodb.starter.repositories;
 
-import com.mongodb.starter.models.PersonEntity;
+import com.mongodb.starter.dtos.TicketDTO;
+import com.mongodb.starter.dtos.UserDTO;
+import com.mongodb.starter.model.Event;
+import com.mongodb.starter.model.Ticket;
+import com.mongodb.starter.model.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
 public interface UserRepository {
 
-    PersonEntity save(PersonEntity personEntity);
+    User save(User userEntity);
 
-    List<PersonEntity> saveAll(List<PersonEntity> personEntities);
+    List<User> saveAll(List<User> userEntities);
 
-    List<PersonEntity> findAll();
+    List<User> findAll();
 
-    List<PersonEntity> findAll(List<String> ids);
+    List<User> findAll(List<String> ids);
 
-    PersonEntity findOne(String id);
+    User findOne(String id);
 
     long count();
 
     long delete(String id);
 
-    long delete(List<String> ids);
+    User update(User userEntity);
 
-    long deleteAll();
+    long update(List<User> userEntities);
 
-    PersonEntity update(PersonEntity personEntity);
 
-    long update(List<PersonEntity> personEntities);
+    Ticket purchaseTicket(User user, Event event);
 
-    double getAverageAge();
+    List<Ticket> getUserTickets(User user);
 
+    List<Event> getUserEvents(User user);
+
+
+    //todo
+    TicketDTO adminValidateTicket(User user, Ticket ticket);
+
+    User findByLogin(String username, String password);
+
+    boolean addTicket(User user, Ticket t);
 }

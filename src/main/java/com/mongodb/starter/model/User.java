@@ -1,6 +1,4 @@
 package com.mongodb.starter.model;
-
-import com.mongodb.starter.models.PersonEntity;
 import org.bson.Document;
 
 import java.io.Serializable;
@@ -76,16 +74,6 @@ public class User implements MongoInterface , Serializable {
                 '}';
     }
 
-    public User() {
-            this.id = new ObjectId();
-            this.username = "username";
-            this.password = "password";
-            this.events = new ArrayList<Event>();
-            this.tickets = new ArrayList<Ticket>();
-            this. isAdmin = false;
-
-
-    }
 
     public boolean isAdmin() {
         return isAdmin;
@@ -125,6 +113,9 @@ public class User implements MongoInterface , Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+    public User() {
+
     }
 
     @Override

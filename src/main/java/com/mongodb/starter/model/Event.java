@@ -16,11 +16,30 @@ public class Event implements MongoInterface, Serializable {
     List<Ticket> tickets;
     List<String> images;
 
+    int capacity;
+
     public Event(ObjectId id, String name, String description, List<Ticket> tickets) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.tickets = tickets;
+    }
+
+    public Event(ObjectId id, String name, String description, List<Ticket> tickets, List<String> images, int capacity) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.tickets = tickets;
+        this.images = images;
+        this.capacity = capacity;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public Event(ObjectId id, String name, String description, List<Ticket> tickets, List<String> images) {
@@ -30,18 +49,12 @@ public class Event implements MongoInterface, Serializable {
         this.tickets = tickets;
         this.images = images;
     }
+    public Event(){
 
-    public static Event testEvent(){
-        ArrayList<String> images = new ArrayList<String>();
-        ArrayList<Ticket> tickets = new ArrayList<Ticket>();
-        images.add("https://derpicdn.net/img/view/2022/7/1/2898577.png");
-        images.add("https://derpicdn.net/img/view/2021/4/15/2593604.jpg");
-        images.add("https://derpicdn.net/img/view/2022/5/9/2861888.jpg");
-        tickets.add(Ticket.testTicket());
-        Event e = new Event(new ObjectId("123"), "Evento 1", "Descripcion 1", tickets);
-        e.setImages(images);
-        return e;
+    }
 
+    public static Event testEvent() {
+        return null;
     }
     public List<String> getImages() {
         return images;

@@ -12,7 +12,8 @@ public record EventDTO(
         String name,
         String description,
         List<TicketDTO>tickets,
-        List<String> images
+        List<String> images,
+        int capacity
 
 ) {
     public EventDTO(Event e){
@@ -21,7 +22,8 @@ public record EventDTO(
                 e.getName(),
                 e.getDescription(),
                 e.getTickets().stream().map(TicketDTO::new).toList(),
-                e.getImages()
+                e.getImages(),
+                e.getCapacity()
         );
 
     }
@@ -29,6 +31,6 @@ public record EventDTO(
         ObjectId _id = id == null ? new ObjectId() : new ObjectId(id);
         return new Event(_id, name, description,
                 tickets.stream().map(TicketDTO::toTicket).toList(),
-                images);
+                images, capacity);
     }
 }

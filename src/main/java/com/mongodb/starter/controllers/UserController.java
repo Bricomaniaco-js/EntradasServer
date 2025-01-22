@@ -1,7 +1,10 @@
 package com.mongodb.starter.controllers;
 
+import com.mongodb.starter.dtos.EventDTO;
 import com.mongodb.starter.dtos.PersonDTO;
+import com.mongodb.starter.dtos.TicketDTO;
 import com.mongodb.starter.dtos.UserDTO;
+import com.mongodb.starter.model.User;
 import com.mongodb.starter.services.PersonService;
 import com.mongodb.starter.services.UserService;
 import org.slf4j.Logger;
@@ -17,7 +20,6 @@ import java.util.List;
 public class UserController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-    private PersonService personService;
     private final UserService userService;
 
 
@@ -25,25 +27,40 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("user")
+    @PostMapping("user/registerUser")
     @ResponseStatus(HttpStatus.CREATED)
-    public PersonDTO postPerson(@RequestBody PersonDTO PersonDTO) {
-        return personService.save(PersonDTO);
+    public UserDTO postUser(@RequestBody UserDTO userDTO) {
+        return userService.save(userDTO);
+    }
+
+    @PostMapping("user/buyTicket")
+    public TicketDTO userBuyTicket(
+            //solo comprobar el usuario y la contraseña como verificacion de identidad
+            @RequestBody UserDTO userDTO, EventDTO eventDTO){
+        return userService.purchaseTicket(userDTO, eventDTO);
     }
 
     @GetMapping("user/{id}")
-    public ResponseEntity<UserDTO> getUser(@RequestBody String id){
+    public ResponseEntity<UserDTO> getUser(@RequestParam String id){
         UserDTO userDTO = userService.findOne(id);
         if (userDTO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.ok(userDTO);
     }
 
-
-    @PostMapping("users")
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<PersonDTO> postPersons(@RequestBody List<PersonDTO> personEntities) {
-        return personService.saveAll(personEntities);
+    @GetMapping("user/findByLogin")
+    public ResponseEntity<UserDTO> findByLogin(@RequestParam String username, @RequestParam String password){
+        UserDTO foundUserDTO = userService.findByLogin(username, password);
+        if (foundUserDTO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.ok(foundUserDTO);
     }
+
+    @GetMapping("user/getUsers")
+    public List<UserDTO> getUsers(){
+        return userService.findAll();
+    }
+
+
+
 
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

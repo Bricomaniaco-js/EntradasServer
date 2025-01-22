@@ -7,8 +7,8 @@ import com.mongodb.client.MongoDatabase;
 public class MongoDBConnection {
 
 
-    private MongoClient mongoClient;
-    private MongoDatabase database;
+    private final MongoClient mongoClient;
+    private final MongoDatabase database;
 
     public MongoDBConnection(String connectionString, String databaseName) {
         mongoClient = MongoClients.create(connectionString);
