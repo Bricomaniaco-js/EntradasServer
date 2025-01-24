@@ -10,8 +10,10 @@ import com.mongodb.client.model.FindOneAndReplaceOptions;
 import com.mongodb.starter.model.Event;
 import com.mongodb.starter.model.Ticket;
 import jakarta.annotation.PostConstruct;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -56,13 +58,18 @@ public class MongoDBEventRep implements EventRepository{
 
     @Override
     public List<Event> findAll() {
-        return null;
+        return eventCollection.find().into(new ArrayList<>());
     }
 
     @Override
-    public List<Event> UserFindAll() {
-        return null;
+    public List<Event> userFindAll() {
+        //retorna todos los eventos pero no sus tickets
+        return eventCollection.find().map(event -> {
+            event.setTickets(new ArrayList<>());
+            return event;
+        }).into(new ArrayList<>());
     }
+
 
     @Override
     public boolean addTicket(Event event, Ticket t) {
@@ -79,5 +86,12 @@ public class MongoDBEventRep implements EventRepository{
             return event.getTickets().size() < event.getCapacity();
         }
         return false;
+    }
+
+    @Override
+    public Event save(Event event) {
+        event.setId(new ObjectId());
+        eventCollection.insertOne(event);
+        return event;
     }
 }

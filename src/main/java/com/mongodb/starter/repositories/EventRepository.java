@@ -18,10 +18,12 @@ public interface EventRepository {
 
     List<Event> findAll();
 
-    List<Event> UserFindAll();
+    List<Event> userFindAll();
 
 
     boolean addTicket(Event event, Ticket t);
 
     boolean eventHasAvailableTickets(Event event);
+
+    Event save(Event event);
 }
