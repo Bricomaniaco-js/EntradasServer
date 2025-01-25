@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event implements MongoInterface, Serializable {
+public class Event implements Serializable {
     ObjectId id;
     String name;
     String description;
@@ -132,23 +132,5 @@ public class Event implements MongoInterface, Serializable {
         this.tickets = tickets;
     }
 
-    @Override
-    public Document toDocument() {
-        ArrayList<Document> docTickets = new ArrayList<>();
-        for(Ticket t : this.getTickets()){
-            docTickets.add(t.toDocument());
-        }
-        return new Document()
-                .append("id", this.id)
-                .append("name", this.name)
-                .append("description", this.description)
-                .append("tickets", docTickets);
-    }
-
-    @Override
-    public Event toObject(Document d) {
-
-        return null;
-    }
 
 }

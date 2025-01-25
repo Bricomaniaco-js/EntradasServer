@@ -77,7 +77,15 @@ public class MongoDBUserRep implements UserRepository{
 
     @Override
     public User findOne(String id) {
-        return null;
+        User foundUser = null;
+        foundUser = userCollection.find(eq("_id", new ObjectId(id))).first();
+        return foundUser;
+    }
+
+    public User findUserWithTicket(String id) {
+        User foundUser = null;
+        foundUser = userCollection.find(eq("tickets._id", new ObjectId(id))).first();
+        return foundUser;
     }
 
     @Override
@@ -110,13 +118,32 @@ public class MongoDBUserRep implements UserRepository{
     }
 
     @Override
-    public Ticket purchaseTicket(User user, Event event) {
-        EventRepository eventRepository = new MongoDBEventRep(client);
-        TicketRepository ticketRepository = new MongoDBTicketRep(client);
+    public User purchaseTicket(User user, Event event) {
+        MongoDBEventRep eventRepository = new MongoDBEventRep(client);
+        eventRepository.init();
+        MongoDBTicketRep ticketRepository = new MongoDBTicketRep(client);
+        ticketRepository.init();
         if(userExists(user) && eventRepository.eventExists(event)){
             if(eventRepository.eventHasAvailableTickets(event)){
-                return ticketRepository.generateTicket(user, event);
+                return findOne(
+                        ticketRepository.generateTicket(user, event)
+                                .getUserId()
+                                .toHexString()
+                );
             }
+        }
+        return null;
+    }
+    @Override
+    public TicketDTO adminValidateTicket(User user, Ticket ticket) {
+        if(userExists(user)){
+            User u = findOne(user.getId().toHexString());
+            if (u.isAdmin()){
+                MongoDBTicketRep ticketRepository = new MongoDBTicketRep(client);
+                ticketRepository.init();
+                return new TicketDTO(ticketRepository.validateTicket(ticket));
+            }
+
         }
         return null;
     }
@@ -124,9 +151,10 @@ public class MongoDBUserRep implements UserRepository{
     @Override
     public boolean addTicket(User user, Ticket ticket) {
         if (userExists(user)) {
-            user.getTickets().add(ticket);
+            List<Ticket> tickets = new ArrayList<>(user.getTickets());
+            tickets.add(ticket);
+            user.setTickets(tickets);
             update(user);
-            return true;
         }
         return false;
     }
@@ -154,9 +182,8 @@ public class MongoDBUserRep implements UserRepository{
 
     }
 
-    @Override
     //todo puede que funcione, sin probar
-    public TicketDTO adminValidateTicket(User user, Ticket ticket) {
+    public TicketDTO adminValidateTickett(User user, Ticket ticket) {
         if(userExists(user)){
             User u = findOne(user.getId().toHexString());
             if (u.isAdmin()){

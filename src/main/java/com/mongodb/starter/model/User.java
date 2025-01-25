@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 
 import com.mongodb.starter.bdd.MongoInterface;
 
-public class User implements MongoInterface , Serializable {
+public class User implements Serializable {
 
 
     ObjectId id;
@@ -118,38 +118,4 @@ public class User implements MongoInterface , Serializable {
 
     }
 
-    @Override
-    public Document toDocument() {
-        ArrayList <Document> docEvents = new ArrayList<>();
-        for(Event e : this.getEvents()){
-            docEvents.add(e.toDocument());
-        }
-        ArrayList <Document> docTickets = new ArrayList<>();
-        for(Ticket t : this.getTickets()){
-            docTickets.add(t.toDocument());
-        }
-
-        Document d = new Document()
-                .append("id", this.getId())
-                .append("isAdmin", this.isAdmin)
-                .append("username", this.getUsername())
-                .append("password", this.getPassword())
-                .append("Events", docEvents)
-                .append("Tickets", docTickets);
-        return d;
-
-    }
-
-    @Override
-    public Object toObject(Document d) {
-        User u = new User(
-                // TODO d.getLong("id"),
-                d.getString("username"),
-                d.getString("password"),
-                tickets,
-                events,
-                d.getBoolean("isAdmin")
-        );
-        return u;
-    }
 }

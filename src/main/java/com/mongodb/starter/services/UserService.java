@@ -39,8 +39,11 @@ public class UserService {
 
     public List<EventDTO> getUserEvents(UserDTO userDTO){return userRepository.getUserEvents(userDTO.toUser()).stream().map(EventDTO::new).toList();}
 
-    public TicketDTO purchaseTicket(UserDTO userDTO, EventDTO eventDTO) {
-        return new TicketDTO(userRepository.purchaseTicket(userDTO.toUser(), eventDTO.toEvent()));
+    public UserDTO purchaseTicket(UserDTO userDTO, EventDTO eventDTO) {
+        return new UserDTO(userRepository.purchaseTicket(userDTO.toUser(), eventDTO.toEvent()));
+    }
+    public TicketDTO validateTicket(UserDTO userDTO, TicketDTO ticketDTO){
+        return userRepository.adminValidateTicket(userDTO.toUser(), ticketDTO.toTicket());
     }
 
     public TicketDTO adminValidateTicket(UserDTO userDTO, TicketDTO ticketDTO){

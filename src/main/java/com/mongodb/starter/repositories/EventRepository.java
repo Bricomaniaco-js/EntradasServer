@@ -2,7 +2,6 @@ package com.mongodb.starter.repositories;
 
 import com.mongodb.starter.model.Event;
 import com.mongodb.starter.model.Ticket;
-import com.mongodb.starter.models.PersonEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +25,6 @@ public interface EventRepository {
     boolean eventHasAvailableTickets(Event event);
 
     Event save(Event event);
+
+    Event userFindOne(String id);
 }

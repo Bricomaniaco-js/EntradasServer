@@ -1,9 +1,6 @@
 package com.mongodb.starter.controllers;
 
-import com.mongodb.starter.dtos.EventDTO;
-import com.mongodb.starter.dtos.PersonDTO;
-import com.mongodb.starter.dtos.TicketDTO;
-import com.mongodb.starter.dtos.UserDTO;
+import com.mongodb.starter.dtos.*;
 import com.mongodb.starter.model.User;
 import com.mongodb.starter.services.PersonService;
 import com.mongodb.starter.services.UserService;
@@ -34,10 +31,20 @@ public class UserController {
     }
 
     @PostMapping("user/buyTicket")
-    public TicketDTO userBuyTicket(
-            //solo comprobar el usuario y la contraseña como verificacion de identidad
-            @RequestBody UserDTO userDTO, EventDTO eventDTO){
-        return userService.purchaseTicket(userDTO, eventDTO);
+    public UserDTO userBuyTicket(@RequestBody UserEventRequest userEventRequest){
+        //solo comprobar el usuario y la contraseña como verificacion de identidad
+        return userService.purchaseTicket(userEventRequest.getUserDTO(), userEventRequest.getEventDTO());
+    }
+
+    @PostMapping("user/validateTicket")
+    public TicketDTO userValidateTicket(@RequestBody UserTicketRequest userTicketRequest){
+        return userService.validateTicket(userTicketRequest.getUserDTO(), userTicketRequest.getTicketDTO());
+    }
+    @GetMapping("user/getUserTickets")
+    public List<TicketDTO> getUserTickets(@RequestParam String id){
+        UserDTO userDTO = userService.findOne(id);
+        if (userDTO == null) return null;
+        return userService.getUserTickets(userDTO);
     }
 
     @GetMapping("user/{id}")

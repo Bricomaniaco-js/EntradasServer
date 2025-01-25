@@ -28,6 +28,12 @@ public class EventController {
         return eventService.userFindAll();
     }
 
+    @GetMapping("getEvent")
+    public EventDTO userGetEvent(@RequestParam String eventId){
+        return eventService.userFindEvent(eventId);
+    }
+
+
     @PostMapping("user/AddEvent")
     @ResponseStatus(HttpStatus.CREATED)
     public EventDTO postEvent(@RequestBody EventDTO eventDTO) {

@@ -34,14 +34,15 @@ public class MongoDBEventRep implements EventRepository{
         this.client = mongoClient;
     }
 
+
     @PostConstruct
     void init() {
         eventCollection = client.getDatabase("AppEntradass").getCollection("Events", Event.class);
     }
+
     @Override
     public boolean eventExists(Event event) {
-        Event foundEvent = null;
-        foundEvent = eventCollection.find(eq("_id", event.getId())).first();
+        Event foundEvent = eventCollection.find(eq("_id", event.getId())).first();
         return foundEvent != null;
     }
 
@@ -74,8 +75,11 @@ public class MongoDBEventRep implements EventRepository{
     @Override
     public boolean addTicket(Event event, Ticket t) {
         if (eventExists(event)){
-            event.getTickets().add(t);
-            update(event);
+            Event e = userFindOne(event.getId().toHexString());
+            List<Ticket> tickets = new ArrayList<>(e.getTickets());
+            tickets.add(t);
+            e.setTickets(tickets);
+            update(e);
             return true;
         }
         return false;
@@ -88,10 +92,20 @@ public class MongoDBEventRep implements EventRepository{
         return false;
     }
 
+
     @Override
     public Event save(Event event) {
         event.setId(new ObjectId());
         eventCollection.insertOne(event);
         return event;
+    }
+
+    @Override
+    public Event userFindOne(String id) {
+        Event foundEvent = null;
+        foundEvent = eventCollection.find(eq("_id", new ObjectId(id))).first();
+        if (foundEvent == null) return null;
+        foundEvent.setTickets(new ArrayList<>());
+        return foundEvent;
     }
 }

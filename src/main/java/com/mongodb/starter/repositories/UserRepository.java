@@ -32,7 +32,7 @@ public interface UserRepository {
     long update(List<User> userEntities);
 
 
-    Ticket purchaseTicket(User user, Event event);
+    User purchaseTicket(User user, Event event);
 
     List<Ticket> getUserTickets(User user);
 
@@ -43,6 +43,7 @@ public interface UserRepository {
     TicketDTO adminValidateTicket(User user, Ticket ticket);
 
     User findByLogin(String username, String password);
+
 
     boolean addTicket(User user, Ticket t);
 }

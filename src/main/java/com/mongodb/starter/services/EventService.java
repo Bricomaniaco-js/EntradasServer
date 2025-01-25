@@ -1,7 +1,6 @@
 package com.mongodb.starter.services;
 
 import com.mongodb.starter.dtos.EventDTO;
-import com.mongodb.starter.dtos.UserDTO;
 import com.mongodb.starter.repositories.EventRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,9 @@ public class EventService {
     public List<EventDTO> userFindAll() {
         return eventRepository.userFindAll().stream().map(EventDTO::new).toList();
     }
-
+    public EventDTO userFindEvent(String id) {
+        return new EventDTO(eventRepository.userFindOne(id));
+    }
 
     public EventDTO save(EventDTO userDTO) {
         return new EventDTO(eventRepository.save(userDTO.toEvent()));
