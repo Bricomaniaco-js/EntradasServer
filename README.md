@@ -1,4 +1,4 @@
-# Quick Start: Java, Spring Boot & MongoDB Template
+# Ticket sales platform server using OpenAPI and MongoDB
 
 ## Client App
 - This API server works together with the client App found at [GitHub - Entradas](https://github.com/Bricomaniaco-js/Entradas).
