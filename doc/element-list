@@ -1,0 +1,7 @@
+com.bricomaniaco.ticketappserver
+com.bricomaniaco.ticketappserver.bdd
+com.bricomaniaco.ticketappserver.controllers
+com.bricomaniaco.ticketappserver.dtos
+com.bricomaniaco.ticketappserver.model
+com.bricomaniaco.ticketappserver.repositories
+com.bricomaniaco.ticketappserver.services
