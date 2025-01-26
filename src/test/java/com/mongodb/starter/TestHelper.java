@@ -1,6 +1,5 @@
 package com.mongodb.starter;
 
-import com.mongodb.starter.dtos.PersonDTO;
 import com.mongodb.starter.models.AddressEntity;
 import com.mongodb.starter.models.CarEntity;
 import com.mongodb.starter.models.PersonEntity;

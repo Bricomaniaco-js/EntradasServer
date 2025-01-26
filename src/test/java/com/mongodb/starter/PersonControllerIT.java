@@ -2,9 +2,7 @@ package com.mongodb.starter;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.starter.dtos.PersonDTO;
 import com.mongodb.starter.models.PersonEntity;
-import com.mongodb.starter.repositories.PersonRepository;
 import jakarta.annotation.PostConstruct;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;

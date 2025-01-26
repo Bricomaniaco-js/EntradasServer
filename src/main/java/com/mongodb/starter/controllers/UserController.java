@@ -1,8 +1,6 @@
 package com.mongodb.starter.controllers;
 
 import com.mongodb.starter.dtos.*;
-import com.mongodb.starter.model.User;
-import com.mongodb.starter.services.PersonService;
 import com.mongodb.starter.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
