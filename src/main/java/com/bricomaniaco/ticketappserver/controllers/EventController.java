@@ -5,9 +5,11 @@ import com.bricomaniaco.ticketappserver.services.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * REST controller for managing Event entities.
@@ -48,6 +50,7 @@ public class EventController {
         return eventService.userFindEvent(eventId);
     }
 
+
     /**
      * Creates a new event.
      *
@@ -58,5 +61,21 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     public EventDTO postEvent(@RequestBody EventDTO eventDTO) {
         return eventService.save(eventDTO);
+    }
+    @PostMapping("/{eventId}/addAdmin")
+    public ResponseEntity<String> addAdmin(@PathVariable String eventId, @RequestBody Map<String, String> request) {
+        String adminName = request.get("adminName");
+        eventService.addAdmin(eventId, adminName);
+        return ResponseEntity.ok("Admin " + adminName + " added to event ID " + eventId);
+    }
+
+    @PutMapping("{eventId}/updateEvent")
+    public ResponseEntity<String> updateEvent(@PathVariable String eventId, @RequestBody EventDTO eventDTO) {
+        eventService.update(eventId, eventDTO);
+        return ResponseEntity.ok("Event updated");
+    }
+    @GetMapping("adminGetEvents")
+    public List<EventDTO> adminGetEvents(){
+        return eventService.adminFindAll();
     }
 }

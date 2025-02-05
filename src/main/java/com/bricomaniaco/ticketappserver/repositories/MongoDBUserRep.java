@@ -18,6 +18,8 @@ import jakarta.annotation.PostConstruct;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class MongoDBUserRep implements UserRepository{
     public User save(User userEntity) {
 
         userEntity.setId(new ObjectId());
-        userCollection.insertOne(userEntity);
+        userCollection.insertOne(userHashPassword(userEntity));
         return userEntity;
     }
 
@@ -190,7 +192,7 @@ public class MongoDBUserRep implements UserRepository{
         User foundUser = null;
         foundUser = userCollection.find(Filters.and(
                         eq("username", username),
-                        eq("password", password)
+                        eq("password", hashPassword(password))
                 )
         ).first();
         return foundUser;
@@ -205,5 +207,40 @@ public class MongoDBUserRep implements UserRepository{
         User foundUser = null;
         foundUser = userCollection.find(eq("_id", user.getId())).first();
         return foundUser != null;
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private User userHashPassword(User user){
+        user.setPassword(hashPassword(user.getPassword()));
+        return user;
+    }
+    private User findByUsername(String username) {
+        User foundUser = null;
+        foundUser = userCollection.find(eq("username", username)).first();
+        return foundUser;
+    }
+
+    public void addAdmin(String adminName, Event event) {
+        if (userExists(findByUsername(adminName))) {
+            User admin = findByUsername(adminName);
+            admin.isAdmin = true;
+            List<Event> events = new ArrayList<>(admin.getEvents());
+            events.add(event);
+            admin.setEvents(events);
+            update(admin);
+        }
     }
 }

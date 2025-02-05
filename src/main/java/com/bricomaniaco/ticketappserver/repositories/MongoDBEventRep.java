@@ -56,6 +56,12 @@ public class MongoDBEventRep implements EventRepository{
     }
 
     @Override
+    public Event update(String eventId, Event eventEntity) {
+        FindOneAndReplaceOptions options = new FindOneAndReplaceOptions().returnDocument(AFTER);
+        return eventCollection.findOneAndReplace(eq("_id", new ObjectId(eventId)), eventEntity, options);
+    }
+
+    @Override
     public List<Event> findAll(List<String> ids) {
         return null;
     }
@@ -110,5 +116,16 @@ public class MongoDBEventRep implements EventRepository{
         if (foundEvent == null) return null;
         foundEvent.setTickets(new ArrayList<>());
         return foundEvent;
+    }
+    public Event findOne(String id) {
+        return eventCollection.find(eq("_id", new ObjectId(id))).first();
+    }
+    @Override
+    public Event addAdmin(String eventId, String adminName){
+        MongoDBUserRep userRepository = new MongoDBUserRep(client);
+        userRepository.init();
+        Event event = findOne(eventId);
+        userRepository.addAdmin(adminName, event);
+        return update(eventId, event);
     }
 }

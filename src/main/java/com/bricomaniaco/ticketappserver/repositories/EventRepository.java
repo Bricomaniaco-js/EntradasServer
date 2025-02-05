@@ -26,6 +26,8 @@ public interface EventRepository {
      * @return the updated event
      */
     Event update(Event eventEntity);
+
+    Event update(String eventId, Event eventEntity);
     /**
      * Finds all events with the specified IDs.
      *
@@ -75,4 +77,6 @@ public interface EventRepository {
      * @return the found event
      */
     Event userFindOne(String id);
+
+    Event addAdmin(String eventId, String adminName);
 }

@@ -17,6 +17,7 @@
 ## API documentation and Swagger
 
 - The Swagger UI can be seen at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html).
+- https://localhost:8443/swagger-ui.html Or here if set up for HTTPS
 - Here you can see the different API endpoints and test the API directly from the browser.
 
 ## Example API Calls

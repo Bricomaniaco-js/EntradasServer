@@ -60,4 +60,22 @@ public class EventService {
     public EventDTO save(EventDTO eventDTO) {
         return new EventDTO(eventRepository.save(eventDTO.toEvent()));
     }
+
+    /**
+     * Adds an admin to an event.
+     *
+     * @param eventId the event ID
+     * @param adminName the admin name
+     */
+    public EventDTO addAdmin(String eventId, String adminName) {
+        return new EventDTO(eventRepository.addAdmin(eventId, adminName));
+    }
+
+    public List<EventDTO> adminFindAll() {
+        return eventRepository.findAll().stream().map(EventDTO::new).toList();
+    }
+
+    public void update(String eventId, EventDTO eventDTO) {
+        eventRepository.update(eventId, eventDTO.toEvent());
+    }
 }
